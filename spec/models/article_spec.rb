@@ -1,5 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Article, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it 'test a number to be a positive' do
+    expect(1).to be_positive # be_positive => 1.posotive? == true
+    expect(5).to be > 2
+  end
 end
