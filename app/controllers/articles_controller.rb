@@ -1,6 +1,20 @@
 class ArticlesController < ApplicationController
+  include Paginable
+
   def index
-    render json:{'data':'ayam'}
+    #articles = Article.order('created_at DESC')
+    #articles = Article.recent
+    #render json:{data:articles}, status: :ok
+
+    #pagination
+    paginated = paginate(Article.recent)
+
+    # return data with serialzation + pagination + pagination metadata
+    render_collection(paginated)
+  end
+
+  def serializer
+    ArticleSerializer
   end
 
   def show
