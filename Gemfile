@@ -25,8 +25,12 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+# addon gem from udemy api courses
 gem 'jsonapi-serializer'
 gem 'jsom-pagination'
+gem 'jsonapi_errors_handler'
+gem "octokit", "~> 4.0"
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
