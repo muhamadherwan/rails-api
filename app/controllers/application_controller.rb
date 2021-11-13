@@ -1,12 +1,8 @@
 class ApplicationController < ActionController::API
-  #include JsonapiErrorsHandler
+  class AuthorizationError < StandardError; end
   
-  #ErrorMapper.map_errors!({
-  #volkan    'ActiveRecord::RecordNotFound' => 
-      'JsonapiErrorsHandler::Errors::NotFound'
-  #)
-  #escue_from ::StandardError, with: lambda { |e| handle_error(e) }
   rescue_from UserAuthentication::AuthenticationError, with: :authentication_error
+  rescue_from AuthorizationError, with: :authorization_error
 
   private
 
@@ -19,4 +15,15 @@ class ApplicationController < ActionController::API
    }
    render json: { "errors": [ error ]}, status: 401
  end 
-end
+ 
+ def authorization_error
+   error = {
+     "status" => "403",
+     "source" => { "pointer" => "/header/authorization" },
+     "title" => "Not authorized"
+     "detail" => "You have no right to access this resource."
+   }
+   render json: { "errors": [ error ]}, status: 403
+ end
+
+
