@@ -14,8 +14,27 @@ class ArticlesController < ApplicationController
     render json: serializer.new(article), status: :ok
   end
 
+  def create
+    article = Article.new(article_params)
+    article.save!
+    render json: article, status: created
+  # if fails
+  rescue 
+    render json: article, adapter: :json_api,
+      #serializer: ActiveModel::Serializer::ErrorSerializer,
+      serializer: ErrorSerializer, status: :unprocessable_entity
+  end
+
   def serializer
     ArticleSerializer
+  end
+
+  private
+
+  def article_params
+    params.require(:data).require(:attributes).
+      permit(:title, :content, :slug) ||
+      ActionController::Parameters.new
   end
 
 end
