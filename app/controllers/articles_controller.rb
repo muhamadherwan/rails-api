@@ -15,14 +15,27 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    article = Article.new(article_params)
+    #article = Article.new(article_params)
+    article = current_user.articles.build(article_params)
     article.save!
     render json: article, status: created
   # if fails
-  rescue 
+  rescue
     render json: article, adapter: :json_api,
-      #serializer: ActiveModel::Serializer::ErrorSerializer,
-      serializer: ErrorSerializer, status: :unprocessable_entity
+      serializer: ErrorSerializer,
+      status: :unprocessable_entity
+  end
+
+  def update
+    #article = Article.find(params[:id])
+    article = current_user.articles.find(params[:id])
+    article.update!(article_params)
+    render json: article, status: ok
+  # if fails
+  rescue
+    render json: article, adapter: :json_api,
+      serializer: ErrorSerializer,
+      status: :unprocessable_entity
   end
 
   def serializer
